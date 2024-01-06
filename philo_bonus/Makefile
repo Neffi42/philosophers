@@ -1,5 +1,5 @@
 ### PROGRAM NAME ###
-NAME		:= philo
+NAME		:= philo_bonus
 
 ### UTILS ###
 CC 			:= cc
@@ -25,7 +25,6 @@ OBJS_DIR 	:= objs
 
 define SRC 	:=
 	main.c
-	utils.c
 endef
 SRC 		:= $(strip $(SRC))
 

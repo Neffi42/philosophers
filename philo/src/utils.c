@@ -1,21 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/06 13:55:12 by abasdere          #+#    #+#             */
-/*   Updated: 2024/01/06 19:22:55 by abasdere         ###   ########.fr       */
+/*   Created: 2024/01/06 19:11:26 by abasdere          #+#    #+#             */
+/*   Updated: 2024/01/06 19:21:34 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	main(int ac, const char **av)
+int	error(char *message)
 {
-	if (ac < 5 || ac > 6)
-		return (error(USAGE));
-	(void)av;
-	return (0);
+	size_t	i;
+
+	if (!message)
+		return (EXIT_FAILURE);
+	while (message[i])
+		i++;
+	write(STDERR_FILENO, message, i);
+	return (EXIT_FAILURE);
 }

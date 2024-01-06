@@ -6,16 +6,15 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:55:12 by abasdere          #+#    #+#             */
-/*   Updated: 2024/01/06 19:22:55 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/01/06 19:07:20 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 int	main(int ac, const char **av)
 {
-	if (ac < 5 || ac > 6)
-		return (error(USAGE));
-	(void)av;
+	if (ac > 1)
+		printf("%s\n", av[1]);
 	return (0);
 }

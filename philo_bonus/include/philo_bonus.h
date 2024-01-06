@@ -1,21 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   philo_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/06 13:55:12 by abasdere          #+#    #+#             */
-/*   Updated: 2024/01/06 19:22:55 by abasdere         ###   ########.fr       */
+/*   Created: 2024/01/06 13:54:18 by abasdere          #+#    #+#             */
+/*   Updated: 2024/01/06 19:07:12 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#ifndef PHILO_H
+# define PHILO_H
 
-int	main(int ac, const char **av)
-{
-	if (ac < 5 || ac > 6)
-		return (error(USAGE));
-	(void)av;
-	return (0);
-}
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <string.h>
+# include <sys/time.h>
+# include <pthread.h>
+
+#endif
