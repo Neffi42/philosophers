@@ -24,6 +24,7 @@ OBJS_DIR 	:= objs
 ### FILES ###
 
 define SRC 	:=
+	ft_utils.c
 	main.c
 	utils.c
 endef
