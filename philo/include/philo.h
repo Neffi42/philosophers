@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:54:18 by abasdere          #+#    #+#             */
-/*   Updated: 2024/01/10 18:33:05 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/01/10 21:57:04 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,17 @@
 # define ARGUMENT ": argument must be an non-null unsigned int\n"
 # define FUNCTION ": function failed\n"
 
+typedef enum e_state
+{
+	EATING,
+	SLEEPING,
+	THINKING,
+	HAS_FORK,
+	DYING
+}	t_state;
+
+typedef struct timeval	t_timeval;
+
 typedef struct s_args
 {
 	unsigned int	nb;
@@ -34,6 +45,13 @@ typedef struct s_args
 	unsigned int	sleep;
 	unsigned int	eat_times;
 }	t_args;
+
+typedef struct s_philo
+{
+	unsigned int	nb;
+	t_state			state;
+	pthread_mutex_t	fork;
+}	t_philo;
 
 int				error(char *message, char *el);
 size_t			ft_strlen(char *str);
