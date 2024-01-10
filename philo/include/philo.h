@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:54:18 by abasdere          #+#    #+#             */
-/*   Updated: 2024/01/07 17:04:58 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/01/10 18:33:05 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,14 @@
 # define ARGUMENT ": argument must be an non-null unsigned int\n"
 # define FUNCTION ": function failed\n"
 
-typedef struct s_philo
+typedef struct s_args
 {
 	unsigned int	nb;
 	unsigned int	die;
 	unsigned int	eat;
 	unsigned int	sleep;
 	unsigned int	eat_times;
-	pthread_mutex_t	mutex;
-}	t_philo;
+}	t_args;
 
 int				error(char *message, char *el);
 size_t			ft_strlen(char *str);
