@@ -8,6 +8,20 @@ DEP_FLAGS	:= -MMD -MP
 MAKE_FLAG 	:= --no-print-directory --silent
 RM 			:= rm -rf
 
+### DIRECTORIES ###
+SRC_DIR 	:= src
+INCLD_DIR 	:= include
+OBJS_DIR 	:= objs
+
+### FILES ###
+SRC 		:=	ft_utils.c \
+				main.c \
+				utils.c
+INCLUDES	:=	$(INCLD_DIR)
+INCLD_FLAG 	:= 	$(addprefix -I , $(INCLUDES))
+OBJS 		:= 	$(patsubst %.c,$(OBJS_DIR)/%.o,$(SRC))
+DEPS		:= 	$(patsubst %.c,$(OBJS_DIR)/%.d,$(SRC))
+
 ### COLORS ###
 DEFAULT    	:= \033[0m
 BLACK    	:= \033[0;30m
@@ -21,37 +35,13 @@ CYAN    	:= \033[0;36m
 BWHITE    	:= \033[1;37m
 NEW			:= \r\033[K
 
-### DIRECTORIES ###
-SRC_DIR 	:= src
-INCLD_DIR 	:= include
-OBJS_DIR 	:= objs
-
-### FILES ###
-
-define SRC 	:=
-	ft_utils.c
-	main.c
-	utils.c
-endef
-SRC 		:= $(strip $(SRC))
-
-define INCLUDES	:=
-	$(INCLD_DIR)/
-endef
-INCLUDES 	:= $(strip $(INCLUDES))
-
-INCLD_FLAG 	:= $(addprefix -I , $(INCLUDES))
-OBJS 		:= $(patsubst %.c,$(OBJS_DIR)/%.o,$(SRC))
-DEPS		:= $(patsubst %.c,$(OBJS_DIR)/%.d,$(SRC))
-
 ### PROJECT ###
 .PHONY: all
 all: $(NAME)
 
-
 $(NAME): $(OBJS)
 	@printf "$(NEW)$(PURPLE)[$(NAME)] $(UGREEN)Building:$(DEFAULT)$(BWHITE) $@$(DEFAULT)"
-	@$(CC) $(CFLAGS) $(OBJS) $(INCLD_FLAG) -o $@
+	@$(CC) $(CFLAGS) $(OBJS) $(LIB) $(INCLD_FLAG) -o $@
 	@printf "\n"
 
 -include $(DEPS)
