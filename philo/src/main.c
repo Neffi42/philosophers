@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:55:12 by abasdere          #+#    #+#             */
-/*   Updated: 2024/01/10 18:40:53 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/19 23:54:20 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,46 @@ static int	check_args(int ac, const char **av, t_args *args)
 	return (EXIT_SUCCESS);
 }
 
+static t_philo	*init_philos(t_args args)
+{
+	t_philo	*philos;
+	size_t	i;
+
+	philos = ft_calloc(args.nb, sizeof(t_philo));
+	if (!philos)
+		return (error(FUNCTION, "ft_calloc"), NULL);
+	i = -1;
+	while (++i < args.nb)
+	{
+		philos[i].nb = i + 1;
+		philos[i].state = THINKING;
+		if (pthread_mutex_init(&philos[i].fork, NULL))
+			return (error(FUNCTION, "pthread_mutex_init"),
+				destr(philos, args), NULL);
+	}
+	return (philos);
+}
+
+static int	create_threads(t_philo *philos, t_args args)
+{
+	size_t	i;
+
+	i = -1;
+	while (++i < args.nb)
+		if (pthread_create(&philos[i].thread, NULL, routine, &philos[i]))
+			return (error(FUNCTION, "pthread_create"), EXIT_FAILURE);
+	return (EXIT_SUCCESS);
+}
+
 int	main(int ac, const char **av)
 {
 	t_args		args;
+	t_philo		*philos;
 
 	if (check_args(ac, av, &args))
+		return (EXIT_FAILURE);
+	philos = inti_philos(args);
+	if (!philos)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
