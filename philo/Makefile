@@ -15,7 +15,10 @@ OBJS_DIR 	:= objs
 
 ### FILES ###
 SRC 		:=	ft_utils.c \
+				ft_utils2.c \
 				main.c \
+				monitor.c \
+				routine.c \
 				utils.c
 INCLUDES	:=	$(INCLD_DIR)
 INCLD_FLAG 	:= 	$(addprefix -I , $(INCLUDES))
