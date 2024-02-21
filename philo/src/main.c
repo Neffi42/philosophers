@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:55:12 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/20 13:05:09 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/21 14:22:56 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,24 +41,27 @@ static int	check_args(int ac, const char **av, t_args *args)
 	return (0);
 }
 
-static int	init_philos(t_data data)
+static int	init_philos(t_data *data)
 {
 	size_t	i;
 
-	data.philos = ft_calloc(data.args.nb, sizeof(t_philo));
-	if (!data.philos)
+	data->philos = ft_calloc(data->args.nb, sizeof(t_philo));
+	if (!data->philos)
 		return (error(FUNCTION, "malloc"), 1);
 	i = -1;
-	while (++i < data.args.nb)
+	while (++i < data->args.nb)
+		data->philos[i].nb = 0;
+	i = -1;
+	while (++i < data->args.nb)
 	{
-		data.philos[i].nb = i + 1;
-		data.philos[i].state = THINKING;
-		if (pthread_mutex_init(&data.philos[i].fork, NULL))
-			return (error(FUNCTION, "pthread_mutex_init"), 1);
+		data->philos[i].nb = i + 1;
+		data->philos[i].state = THINKING;
+		data->philos[i].thread = NULL;
+		if (pthread_mutex_init(&(data->philos[i].fork), NULL))
+			return (error(FUNCTION, "pthread_mutex_init"), destroy(data));
 	}
 	return (0);
 }
-
 
 // static int	create_threads(t_philo *philos, t_args args)
 // {
@@ -77,9 +80,7 @@ int	main(int ac, const char **av)
 
 	if (check_args(ac, av, &(data.args)))
 		return (1);
-	if (init_philos(data))
+	if (init_philos(&data))
 		return (1);
-	if (!philos)
-		return (1);
-	return (monitor(philos, args));
+	return (destroy(&data), 0);
 }
