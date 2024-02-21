@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 15:34:03 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/21 14:25:26 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/21 14:58:57 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,52 +32,55 @@ int	error(char *message, char *el)
 }
 
 /**
- * @brief Destroys the mutexes used in the program.
+ * @brief Destroys the mutexes associated with the philosophers.
  *
- * This function is responsible for destroying the mutexes used in the program.
- * It takes a pointer to the data structure as a parameter.
+ * This function is responsible for destroying
+ * the mutexes that were created for the philosophers.
+ * It takes a pointer to the `t_philo` structure as a parameter.
  *
- * @param data A pointer to the data structure.
+ * @param philos A pointer to the `t_philo` structure.
  */
-static void	destroy_mutexes(t_data *data)
+static void	destroy_mutexes(t_philo *philos)
 {
 	size_t	i;
 
 	i = -1;
-	while (++i < data->args.nb)
-		if (data->philos[i].nb != 0)
-			pthread_mutex_destroy(&data->philos[i].fork);
+	while (++i < philos->args->nb)
+		if (philos[i].nb != 0)
+			pthread_mutex_destroy(&(philos[i].fork));
 }
 
 /**
- * @brief Destroys the threads used in the program.
+ * @brief Destroys the threads associated with the philosophers.
  *
- * This function is responsible for destroying the threads used in the program.
- * It takes a pointer to a `t_data` structure as a parameter.
- * The function does not return a value.
+ * @param philos The array of philosopher structures.
  */
-static void	destroy_threads(t_data *data)
+static void	destroy_threads(t_philo *philos)
 {
 	size_t	i;
 
 	i = -1;
-	while (++i < data->args.nb)
-		if (data->philos[i].thread)
-			pthread_detach(data->philos[i].thread);
+	while (++i < philos->args->nb)
+		if (philos[i].thread)
+			pthread_join(philos[i].thread, NULL);
 }
 
 /**
- * @brief Destroys the data structure and frees allocated memory.
+ * @brief Destroys the philosopher objects.
  *
- * @param data The pointer to the data structure to be destroyed.
+ * This function is responsible for freeing
+ * the memory allocated for the philosopher objects.
+ *
+ * @param philos The array of philosopher objects.
  * @return int Returns 0 on success, -1 on failure.
  */
-int	destroy(t_data *data)
+int	destroy(t_philo *philos)
 {
-	destroy_mutexes(data);
-	destroy_threads(data);
-	if (data->philos)
-		free(data->philos);
+	if (!philos)
+		return (1);
+	destroy_mutexes(philos);
+	destroy_threads(philos);
+	free(philos);
 	return (1);
 }
 

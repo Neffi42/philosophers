@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:54:18 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/21 14:24:20 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/21 14:55:31 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,8 @@ typedef struct s_philo
 	t_state			state;
 	pthread_mutex_t	fork;
 	pthread_t		thread;
+	t_args			*args;
 }	t_philo;
-
-typedef struct s_data
-{
-	t_philo	*philos;
-	t_args	args;
-}	t_data;
 
 size_t			ft_strlen(char *str);
 void			*ft_calloc(size_t nmemb, size_t size);
@@ -66,9 +61,9 @@ int				ft_strncmp(const char *s1, const char *s2, size_t n);
 unsigned int	ft_atoui(const char *nptr);
 char			*ft_uitoa(unsigned int n);
 
-void			*routine(t_philo *philo, t_args args);
+void			*routine(void *arg);
 
 int				error(char *message, char *el);
-int				destroy(t_data *data);
+int				destroy(t_philo *philos);
 
 #endif
