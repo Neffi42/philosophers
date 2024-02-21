@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:55:12 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/21 14:51:46 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/21 15:10:08 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	check_args(int ac, const char **av, t_args *args)
 		args->eat_times = 0;
 	else if (check_arg(&args->eat_times, av[5]))
 		return (1);
-	return (0);
+	return (args->start = 0, 0);
 }
 
 static int	init_philos(t_philo **philos, t_args *args)
@@ -76,5 +76,7 @@ int	main(int ac, const char **av)
 		return (1);
 	if (init_philos(&philos, &args))
 		return (1);
+	sleep(5);
+	args.start = 1;
 	return (destroy(philos), 0);
 }

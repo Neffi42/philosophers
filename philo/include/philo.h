@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:54:18 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/21 14:55:31 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/21 15:07:33 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_args
 	unsigned int	eat;
 	unsigned int	sleep;
 	unsigned int	eat_times;
+	int				start;
 }	t_args;
 
 typedef struct s_philo
