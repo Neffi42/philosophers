@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 15:34:03 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/21 15:06:25 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/22 11:23:23 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ int	destroy(t_philo *philos)
 		return (1);
 	destroy_threads(philos);
 	destroy_mutexes(philos);
-	free(philos);
-	return (1);
+	pthread_mutex_destroy(&(philos->args->start));
+	pthread_mutex_destroy(&(philos->args->write));
+	pthread_mutex_destroy(&(philos->args->die_mutex));
+	return (free(philos), 1);
 }

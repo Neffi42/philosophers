@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:54:18 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/21 15:07:33 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/22 11:17:39 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,9 @@ typedef struct s_args
 	unsigned int	eat;
 	unsigned int	sleep;
 	unsigned int	eat_times;
-	int				start;
+	pthread_mutex_t	start;
+	pthread_mutex_t	write;
+	pthread_mutex_t	die_mutex;
 }	t_args;
 
 typedef struct s_philo
@@ -52,6 +54,7 @@ typedef struct s_philo
 	unsigned int	nb;
 	t_state			state;
 	pthread_mutex_t	fork;
+	pthread_mutex_t	*fork2;
 	pthread_t		thread;
 	t_args			*args;
 }	t_philo;

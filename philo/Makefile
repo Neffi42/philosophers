@@ -4,6 +4,12 @@ NAME		:= philo
 ### UTILS ###
 CC 			:= clang
 CFLAGS 		:= -Wall -Wextra -Werror -g3 -pthread
+ifeq (thread, $(filter thread,$(MAKECMDGOALS)))
+	CFLAGS += -fsanitize=thread
+endif
+ifeq (leak, $(filter leak,$(MAKECMDGOALS)))
+	CFLAGS += -fsanitize=leak
+endif
 DEP_FLAGS	:= -MMD -MP
 MAKE_FLAG 	:= --no-print-directory --silent
 RM 			:= rm -rf
@@ -38,7 +44,7 @@ BWHITE    	:= \033[1;37m
 NEW			:= \r\033[K
 
 ### PROJECT ###
-.PHONY: all
+.PHONY: all clean fclean re thread leak norm
 all: $(NAME)
 
 $(NAME): $(OBJS)
@@ -52,19 +58,19 @@ $(OBJS_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJS_DIR)
 	@$(CC) $(DEP_FLAGS) $(CFLAGS) $(INCLD_FLAG) -c $< -o $@
 
-.PHONY: clean
 clean: ; @printf "$(PURPLE)[$(NAME)] $(RED)Removing $(DEFAULT)$(OBJS_DIR) files\n"
 	@$(RM) $(OBJS_DIR)
 
-.PHONY: fclean
 fclean: clean ; @printf "$(PURPLE)[$(NAME)] $(RED)Removing $(DEFAULT)$(NAME)\n"
 	@$(RM) $(NAME)
 
-.PHONY: re
 re: fclean all
 
+thread: re
+
+leak: re
+
 ### NORM ###
-.PHONY: norm
 norm:
 	@norminette $(SRC_DIR) $(INCLD_DIR) | awk '/Error/ {print; found=1} END \
 	{if (!found) {print "$(PURPLE)[$(NAME)] $(DEFAULT)Norm: $(BWHITE)OK$(DEFAULT)"; exit 0 }; exit 1 }'
