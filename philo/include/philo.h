@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:54:18 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/22 11:17:39 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/22 15:05:00 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,24 +39,33 @@ typedef struct timeval	t_timeval;
 
 typedef struct s_args
 {
-	unsigned int	nb;
-	unsigned int	die;
-	unsigned int	eat;
-	unsigned int	sleep;
-	unsigned int	eat_times;
-	pthread_mutex_t	start;
-	pthread_mutex_t	write;
-	pthread_mutex_t	die_mutex;
+	unsigned int	total_nb;
+	unsigned int	total_eat;
+	unsigned int	time_die;
+	unsigned int	time_eat;
+	unsigned int	time_sleep;
 }	t_args;
+
+typedef struct s_shared
+{
+	int				is_dead;
+	pthread_mutex_t	mutex_is_dead;
+	pthread_mutex_t	mutex_write;
+	pthread_mutex_t	mutex_start;
+}	t_shared;
 
 typedef struct s_philo
 {
 	unsigned int	nb;
+	t_args			args;
 	t_state			state;
+	int				*is_dead;
+	pthread_t		thread;
 	pthread_mutex_t	fork;
 	pthread_mutex_t	*fork2;
-	pthread_t		thread;
-	t_args			*args;
+	pthread_mutex_t	*mutex_is_dead;
+	pthread_mutex_t	*mutex_write;
+	pthread_mutex_t	*mutex_start;
 }	t_philo;
 
 size_t			ft_strlen(char *str);
@@ -65,9 +74,12 @@ int				ft_strncmp(const char *s1, const char *s2, size_t n);
 unsigned int	ft_atoui(const char *nptr);
 char			*ft_uitoa(unsigned int n);
 
+int				init_philos(t_philo *philos, t_shared shared, t_args args);
+int				init_shared(t_shared *shared);
+
 void			*routine(void *arg);
 
 int				error(char *message, char *el);
-int				destroy(t_philo *philos);
+int				destroy(t_philo *philos, unsigned int total_nb);
 
 #endif

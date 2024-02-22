@@ -6,23 +6,12 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 15:34:03 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/22 11:23:23 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/22 15:06:57 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-/**
- * @brief Prints an error message along with the provided element.
- *
- * This function is used to display an error message along with the element
- * that caused the error. It takes a message string and an element string as
- * parameters and prints them to the standard error stream.
- *
- * @param message The error message to be displayed.
- * @param el The element that caused the error.
- * @return The return value of the function is not specified.
- */
 int	error(char *message, char *el)
 {
 	if (el)
@@ -31,57 +20,34 @@ int	error(char *message, char *el)
 	return (1);
 }
 
-/**
- * @brief Destroys the mutexes associated with the philosophers.
- *
- * This function is responsible for destroying
- * the mutexes that were created for the philosophers.
- * It takes a pointer to the `t_philo` structure as a parameter.
- *
- * @param philos A pointer to the `t_philo` structure.
- */
-static void	destroy_mutexes(t_philo *philos)
+static void	destroy_mutexes(t_philo *philos, unsigned int total_nb)
 {
 	size_t	i;
 
 	i = -1;
-	while (++i < philos->args->nb)
+	while (++i < total_nb)
 		if (philos[i].nb != 0)
 			pthread_mutex_destroy(&(philos[i].fork));
 }
 
-/**
- * @brief Destroys the threads associated with the philosophers.
- *
- * @param philos The array of philosopher structures.
- */
-static void	destroy_threads(t_philo *philos)
+static void	destroy_threads(t_philo *philos, unsigned int total_nb)
 {
 	size_t	i;
 
 	i = -1;
-	while (++i < philos->args->nb)
+	while (++i < total_nb)
 		if (philos[i].thread)
 			pthread_join(philos[i].thread, NULL);
 }
 
-/**
- * @brief Destroys the philosopher objects.
- *
- * This function is responsible for freeing
- * the memory allocated for the philosopher objects.
- *
- * @param philos The array of philosopher objects.
- * @return int Returns 0 on success, -1 on failure.
- */
-int	destroy(t_philo *philos)
+int	destroy(t_philo *philos, unsigned int total_nb)
 {
 	if (!philos)
 		return (1);
-	destroy_threads(philos);
-	destroy_mutexes(philos);
-	pthread_mutex_destroy(&(philos->args->start));
-	pthread_mutex_destroy(&(philos->args->write));
-	pthread_mutex_destroy(&(philos->args->die_mutex));
+	destroy_threads(philos, total_nb);
+	destroy_mutexes(philos, total_nb);
+	pthread_mutex_destroy(philos->mutex_start);
+	pthread_mutex_destroy(philos->mutex_write);
+	pthread_mutex_destroy(philos->mutex_is_dead);
 	return (free(philos), 1);
 }
