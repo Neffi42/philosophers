@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:54:18 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/22 15:05:00 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/22 17:32:14 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct s_philo
 	t_state			state;
 	int				*is_dead;
 	pthread_t		thread;
+	size_t			last_meal;
 	pthread_mutex_t	fork;
 	pthread_mutex_t	*fork2;
 	pthread_mutex_t	*mutex_is_dead;
@@ -74,8 +75,11 @@ int				ft_strncmp(const char *s1, const char *s2, size_t n);
 unsigned int	ft_atoui(const char *nptr);
 char			*ft_uitoa(unsigned int n);
 
-int				init_philos(t_philo *philos, t_shared shared, t_args args);
+int				init_philos(t_philo *philos, t_shared *shared, t_args args);
 int				init_shared(t_shared *shared);
+
+char			*find_message(t_state state);
+t_state 		find_new_state(t_state state);
 
 void			*routine(void *arg);
 

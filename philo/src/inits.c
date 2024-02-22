@@ -6,13 +6,13 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 14:23:48 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/22 15:08:28 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/22 16:45:53 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	init_philo(t_philo *philo, t_shared shared, t_args args)
+static void	init_philo(t_philo *philo, t_shared *shared, t_args args)
 {
 	if ((!(args.total_nb % 2) && !(philo->nb % 2))
 		|| (args.total_nb % 2 && philo->nb % 2))
@@ -20,10 +20,10 @@ static void	init_philo(t_philo *philo, t_shared shared, t_args args)
 	else
 		philo->state = THINKING;
 	philo->thread = 0;
-	philo->mutex_is_dead = &(shared.mutex_is_dead);
-	philo->mutex_write = &(shared.mutex_write);
-	philo->mutex_start = &(shared.mutex_start);
-	philo->is_dead = &(shared.is_dead);
+	philo->mutex_is_dead = &(shared->mutex_is_dead);
+	philo->mutex_write = &(shared->mutex_write);
+	philo->mutex_start = &(shared->mutex_start);
+	philo->is_dead = &(shared->is_dead);
 	philo->args.time_die = args.time_die;
 	philo->args.time_eat = args.time_eat;
 	philo->args.time_sleep = args.time_sleep;
@@ -31,7 +31,7 @@ static void	init_philo(t_philo *philo, t_shared shared, t_args args)
 	philo->args.total_nb = args.total_nb;
 }
 
-int	init_philos(t_philo *philos, t_shared shared, t_args args)
+int	init_philos(t_philo *philos, t_shared *shared, t_args args)
 {
 	unsigned int	i;
 

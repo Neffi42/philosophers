@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:55:12 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/22 15:05:09 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/22 16:45:12 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	main(int ac, const char **av)
 	if (init_shared(&shared))
 		return (free(philos), 1);
 	pthread_mutex_lock(&(shared.mutex_start));
-	if (init_philos(philos, shared, args))
+	if (init_philos(philos, &shared, args))
 		return (1);
 	pthread_mutex_unlock(&(shared.mutex_start));
 	return (destroy(philos, args.total_nb), 0);
