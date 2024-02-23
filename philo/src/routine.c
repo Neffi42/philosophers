@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 23:43:53 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/22 17:26:12 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/23 13:03:39 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,18 @@ static int	change_state(t_philo *philo, t_state state)
 
 static int	simulation(t_philo *philo)
 {
-	pthread_mutex_lock(philo->mutex_is_dead);
-		if (philo->is_dead)
-			return (pthread_mutex_unlock(philo->mutex_is_dead), 1);
-	pthread_mutex_unlock(philo->mutex_is_dead);
-	if (change_state(philo, find_new_state(philo->state)))
-		return (1);
+	pthread_mutex_lock(philo->start);
+		if (!philo->start)
+			return (pthread_mutex_unlock(philo->mutex_start), 1);
+	pthread_mutex_unlock(philo->mutex_start);
+	if (philo->state == EATING && change_state(philo, EATING, "is eating"))
+			return (1);
+	else if (philo->state == SLEEPING)
+		if (change_state(philo, SLEEPING, "is sleeping"))
+			return (1);
+	else if (philo->state == THINKING)
+		if (change_state(philo, THINKING, "is thinking"))
+			return (1);
 	return (0);
 }
 
@@ -45,8 +51,6 @@ void	*routine(void *arg)
 	philo = (t_philo *)arg;
 	if (gettimeofday(&tv, NULL))
 		return (error(FUNCTION, "gettimeofday"), NULL);
-	pthread_mutex_lock(philo->mutex_start);
-	pthread_mutex_unlock(philo->mutex_start);
 	while (!simulation(philo))
 		;
 	return (NULL);

@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:55:12 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/22 16:45:12 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/23 13:01:23 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,29 @@ static int	check_args(int ac, const char **av, t_args *args)
 	return (0);
 }
 
+static int	monitor(t_philo *philos, t_args args, t_shared *shared)
+{
+	while (1)
+	{
+		if (args.total_eat)
+		{
+			pthread_mutex_lock(&(shared->mutex_finished));
+			if (shared->finished == args.total_nb)
+			{
+				(pthread_mutex_lock(&(shared->start)), shared->start = 0);
+				pthread_mutex_unlock(&(shared->start));
+			}
+			pthread_mutex_unlock(&(shared->mutex_finished));
+		}
+		pthread_mutex_lock(&(shared->start));
+		if (!shared->start)
+			break ;
+		pthread_mutex_unlock(&(shared->start));
+		usleep(1000);
+	}
+	return (destroy(philos, args.total_nb), 0);
+}
+
 int	main(int ac, const char **av)
 {
 	t_philo		*philos;
@@ -60,5 +83,5 @@ int	main(int ac, const char **av)
 	if (init_philos(philos, &shared, args))
 		return (1);
 	pthread_mutex_unlock(&(shared.mutex_start));
-	return (destroy(philos, args.total_nb), 0);
+	return (monitor(philos, args, &shared));
 }

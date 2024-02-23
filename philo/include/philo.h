@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:54:18 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/22 17:32:14 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/23 13:02:53 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,23 +48,27 @@ typedef struct s_args
 
 typedef struct s_shared
 {
-	int				is_dead;
-	pthread_mutex_t	mutex_is_dead;
+	unsigned int	finished;
+	int				start;
+	pthread_mutex_t	mutex_finished;
 	pthread_mutex_t	mutex_write;
 	pthread_mutex_t	mutex_start;
 }	t_shared;
 
 typedef struct s_philo
 {
-	unsigned int	nb;
 	t_args			args;
 	t_state			state;
-	int				*is_dead;
 	pthread_t		thread;
 	size_t			last_meal;
-	pthread_mutex_t	fork;
-	pthread_mutex_t	*fork2;
-	pthread_mutex_t	*mutex_is_dead;
+	unsigned int	fork;
+	unsigned int	fork2;
+	unsigned int	nb;
+	int				*start;
+	unsigned int	*finished;
+	pthread_mutex_t	fork_mutex;
+	pthread_mutex_t	*fork2_mutex;
+	pthread_mutex_t	*mutex_finished;
 	pthread_mutex_t	*mutex_write;
 	pthread_mutex_t	*mutex_start;
 }	t_philo;
