@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:54:18 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/23 13:02:53 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/23 13:36:56 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ typedef enum e_state
 	SLEEPING,
 	THINKING,
 	HAS_FORK,
-	DYING
+	DEAD
 }	t_state;
 
 typedef struct timeval	t_timeval;
@@ -66,8 +66,8 @@ typedef struct s_philo
 	unsigned int	nb;
 	int				*start;
 	unsigned int	*finished;
-	pthread_mutex_t	fork_mutex;
-	pthread_mutex_t	*fork2_mutex;
+	pthread_mutex_t	mutex_fork;
+	pthread_mutex_t	*mutex_fork2;
 	pthread_mutex_t	*mutex_finished;
 	pthread_mutex_t	*mutex_write;
 	pthread_mutex_t	*mutex_start;

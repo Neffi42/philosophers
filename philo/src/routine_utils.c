@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 17:22:08 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/22 17:23:12 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/23 13:07:17 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,5 @@ t_state find_new_state(t_state state)
 	else if (state == HAS_FORK)
 		return (EATING);
 	else
-		return (DYING);
+		return (DEAD);
 }
