@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 14:23:48 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/26 10:22:46 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/26 10:49:16 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,18 @@
 
 static void	init_philo(t_philo *philo, t_shared *shared, t_rules rules)
 {
-	if ((!(rules.total_nb % 2) && !(philo->nb % 2))
-		|| (rules.total_nb % 2 && philo->nb % 2))
-		philo->state = EATING;
-	else
-		philo->state = THINKING;
-	philo->thread = 0;
-	philo->mutex_write = &(shared->mutex_write);
-	philo->mutex_start = &(shared->mutex_start);
 	philo->rules.time_die = rules.time_die;
 	philo->rules.time_eat = rules.time_eat;
 	philo->rules.time_sleep = rules.time_sleep;
 	philo->rules.total_eat = rules.total_eat;
 	philo->rules.total_nb = rules.total_nb;
+	philo->state = EATING;
+	philo->thread = 0;
+	philo->last_meal = 0;
+	philo->start = &(shared->start);
+	philo->finished = &(shared->finished);
+	philo->mutex_write = &(shared->mutex_write);
+	philo->mutex_start = &(shared->mutex_start);
 	philo->fork = 0;
 }
 

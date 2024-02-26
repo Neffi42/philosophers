@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:55:12 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/26 10:29:40 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/26 11:06:36 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int	monitor(t_philo *philos, t_rules rules, t_shared *shared)
 	while (1)
 	{
 		pthread_mutex_lock(&(shared->mutex_finished));
-		if (shared->finished == rules.total_nb)
+		if (shared->finished < 0 || shared->finished >= rules.total_nb)
 		{
 			pthread_mutex_lock(&(shared->mutex_start));
 			shared->start = 0;
@@ -83,5 +83,6 @@ int	main(int ac, const char **av)
 	if (init_philos(philos, &shared, rules))
 		return (1);
 	pthread_mutex_unlock(&(shared.mutex_start));
+	return (destroy(philos, rules.total_nb), 0);
 	return (monitor(philos, rules, &shared));
 }

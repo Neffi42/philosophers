@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 15:34:03 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/26 10:29:00 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/26 11:28:04 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,17 @@ int	error(char *message, char *el)
 {
 	if (el)
 		write(STDERR_FILENO, el, ft_strlen(el));
-	write(STDERR_FILENO, message, ft_strlen(message));
+	if (message)
+		write(STDERR_FILENO, message, ft_strlen(message));
 	return (1);
+}
+
+int	sim_error(t_philo *philo, char *message, char *el)
+{
+	pthread_mutex_lock(philo->mutex_finished);
+	*(philo->finished) = philo->rules.total_nb;
+	pthread_mutex_unlock(philo->mutex_finished);
+	return (error(message, el));
 }
 
 static void	destroy_mutexes(t_philo *philos, int total_nb)
@@ -46,8 +55,11 @@ int	destroy(t_philo *philos, int total_nb)
 		return (1);
 	destroy_threads(philos, total_nb);
 	destroy_mutexes(philos, total_nb);
-	pthread_mutex_destroy(philos->mutex_start);
-	pthread_mutex_destroy(philos->mutex_write);
-	pthread_mutex_destroy(philos->mutex_finished);
+	if (philos->mutex_start)
+		pthread_mutex_destroy(philos->mutex_start);
+	if (philos->mutex_write)
+		pthread_mutex_destroy(philos->mutex_write);
+	if (philos->mutex_finished)
+		pthread_mutex_destroy(philos->mutex_finished);
 	return (free(philos), 1);
 }

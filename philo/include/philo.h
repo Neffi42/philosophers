@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:54:18 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/26 10:30:28 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/26 11:20:01 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,13 @@ int				init_shared(t_shared *shared);
 
 char			*find_message(t_state state);
 t_state			find_new_state(t_state state);
-
+int				change_state(t_philo *philo, t_state state);
 void			*routine(void *arg);
 
+int				simulation(t_philo *philo, long long time);
+
 int				error(char *message, char *el);
+int				sim_error(t_philo *philo, char *message, char *el);
 int				destroy(t_philo *philos, int total_nb);
 
 #endif
