@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:54:18 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/26 11:20:01 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/26 14:55:30 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct s_philo
 	t_state			state;
 	pthread_t		thread;
 	long long		last_meal;
+	int				nb_meals;
 	int				fork;
 	int				*fork2;
 	int				nb;
@@ -85,13 +86,18 @@ int				init_shared(t_shared *shared);
 
 char			*find_message(t_state state);
 t_state			find_new_state(t_state state);
-int				change_state(t_philo *philo, t_state state);
+int				print_state(t_philo *philo);
+long long		ft_ogettime(t_philo *philo, long long *time);
+int				sim_error(t_philo *philo, char *message, char *el);
+
+int				die(t_philo *philo, long long time);
+int				eat(t_philo *philo, long long time);
+int				ft_sleep(t_philo *philo);
+int				check_start(t_philo *philo);
+
 void			*routine(void *arg);
 
-int				simulation(t_philo *philo, long long time);
-
 int				error(char *message, char *el);
-int				sim_error(t_philo *philo, char *message, char *el);
 int				destroy(t_philo *philos, int total_nb);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 14:23:48 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/26 10:49:16 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/26 14:24:24 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,13 @@ static void	init_philo(t_philo *philo, t_shared *shared, t_rules rules)
 	philo->rules.time_sleep = rules.time_sleep;
 	philo->rules.total_eat = rules.total_eat;
 	philo->rules.total_nb = rules.total_nb;
-	philo->state = EATING;
+	philo->state = THINKING;
 	philo->thread = 0;
 	philo->last_meal = 0;
+	philo->nb_meals = 0;
 	philo->start = &(shared->start);
 	philo->finished = &(shared->finished);
+	philo->mutex_finished = &(shared->mutex_finished);
 	philo->mutex_write = &(shared->mutex_write);
 	philo->mutex_start = &(shared->mutex_start);
 	philo->fork = 0;
@@ -45,13 +47,19 @@ int	init_philos(t_philo *philos, t_shared *shared, t_rules rules)
 				destroy(philos, i));
 		if (pthread_create(&(philos[i].thread), NULL, routine, &philos[i]))
 			return (error(FUNCTION, "pthread_create"), destroy(philos, i));
+	}
+	i = -1;
+	while (++i < rules.total_nb)
+	{
 		philos[i].fork2 = &(philos[(i + 1) % rules.total_nb].fork);
+		philos[i].mutex_fork2 = &(philos[(i + 1) % rules.total_nb].mutex_fork);
 	}
 	return (0);
 }
 
 int	init_shared(t_shared *shared)
 {
+	shared->start = 0;
 	if (pthread_mutex_init(&(shared->mutex_start), NULL))
 		return (error(FUNCTION, "pthread_mutex_init"));
 	if (pthread_mutex_init(&(shared->mutex_write), NULL))

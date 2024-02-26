@@ -24,8 +24,9 @@ SRC 		:=	ft_utils.c \
 				ft_utils2.c \
 				inits.c \
 				main.c \
+				routine_utils.c \
+				routine_utils2.c \
 				routine.c \
-				simulation.c \
 				utils.c
 INCLUDES	:=	$(INCLD_DIR)
 INCLD_FLAG 	:= 	$(addprefix -I , $(INCLUDES))
