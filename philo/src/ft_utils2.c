@@ -6,11 +6,37 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:47:49 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/20 09:51:43 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/26 09:45:29 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+size_t	ft_strlen(char *str)
+{
+	size_t	i;
+
+	i = 0;
+	if (!str)
+		return (1);
+	while (str[i])
+		i++;
+	return (i);
+}
+
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < n && (s1[i] || s2[i]))
+	{
+		if (s1[i] != s2[i])
+			return ((unsigned char)s1[i] - s2[i]);
+		i++;
+	}
+	return (0);
+}
 
 static void	*ft_memset(void *s, int c, size_t n)
 {

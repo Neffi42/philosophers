@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 15:34:03 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/23 11:24:30 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/26 10:29:00 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,19 @@ int	error(char *message, char *el)
 	return (1);
 }
 
-static void	destroy_mutexes(t_philo *philos, unsigned int total_nb)
+static void	destroy_mutexes(t_philo *philos, int total_nb)
 {
-	size_t	i;
+	int	i;
 
 	i = -1;
 	while (++i < total_nb)
 		if (philos[i].nb != 0)
-			pthread_mutex_destroy(&(philos[i].fork));
+			pthread_mutex_destroy(&(philos[i].mutex_fork));
 }
 
-static void	destroy_threads(t_philo *philos, unsigned int total_nb)
+static void	destroy_threads(t_philo *philos, int total_nb)
 {
-	size_t	i;
+	int	i;
 
 	i = -1;
 	while (++i < total_nb)
@@ -40,7 +40,7 @@ static void	destroy_threads(t_philo *philos, unsigned int total_nb)
 			pthread_join(philos[i].thread, NULL);
 }
 
-int	destroy(t_philo *philos, unsigned int total_nb)
+int	destroy(t_philo *philos, int total_nb)
 {
 	if (!philos)
 		return (1);

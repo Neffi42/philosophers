@@ -6,89 +6,92 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 19:11:26 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/20 13:05:02 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/26 10:12:28 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static size_t	ft_nbrlen(ssize_t	nbr)
+static size_t	count_chars(int n)
 {
-	size_t	count;
+	size_t	chars;
 
-	count = 1;
-	while (nbr / 10)
+	chars = 0;
+	if (n == -2147483648)
+		return (11);
+	if (n == 0)
+		return (1);
+	if (n < 0)
 	{
-		count++;
-		nbr /= 10;
+		n = -n;
+		chars++;
 	}
-	return (count);
+	while (n > 0)
+	{
+		n /= 10;
+		chars++;
+	}
+	return (chars);
 }
 
-size_t	ft_strlen(char *str)
+static int	ft_abs(int n)
 {
+	if (n < 0)
+		return (-n);
+	return (n);
+}
+
+char	*ft_itoa(int n)
+{
+	char	*r;
+	int		sign;
 	size_t	i;
 
-	i = 0;
-	if (!str)
-		return (1);
-	while (str[i])
-		i++;
-	return (i);
-}
-
-char	*ft_uitoa(unsigned int n)
-{
-	unsigned long	nbr;
-	size_t			count;
-	char			*str_n;
-
-	nbr = n;
-	count = ft_nbrlen(nbr);
-	str_n = malloc((count + 1) * sizeof(char));
-	if (!str_n)
+	sign = 0;
+	if (n < 0)
+		sign = 1;
+	i = count_chars(n);
+	r = (char *) ft_calloc(i + 1, sizeof(char));
+	if (!r)
 		return (NULL);
-	str_n[count--] = '\0';
-	if (!nbr)
-		str_n[count--] = nbr + '0';
-	while (nbr)
+	while (i-- > 0)
 	{
-		str_n[count--] = nbr % 10 + '0';
-		nbr /= 10;
+		r[i] = ft_abs(n % 10) + '0';
+		n /= 10;
 	}
-	if (!count)
-		str_n[count] = '-';
-	return (str_n);
+	if (sign)
+		r[0] = '-';
+	return (r);
 }
 
-unsigned int	ft_atoui(const char *nptr)
+static int	ft_isspace(char c)
 {
-	unsigned int	n;
+	return (c == ' ' || c == '\f' || c == '\n'
+		|| c == '\r' || c == '\t' || c == '\v');
+}
 
-	n = 0;
-	while (*nptr == ' ' || (*nptr >= '\t' && *nptr <= '\r'))
+int	ft_atoi(const char *nptr)
+{
+	int	r;
+	int	sign;
+
+	r = 0;
+	sign = 1;
+	while (ft_isspace(*nptr))
 		nptr++;
 	if (*nptr == '+' || *nptr == '-')
 	{
 		if (*nptr == '-')
-			return (0);
+			sign = -1;
 		nptr++;
 	}
-	while (*nptr >= '0' && *nptr <= '9')
-		n = n * 10 + (*(nptr++) - '0');
-	return (n);
-}
-
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < n && (s1[i] || s2[i]))
+	while (*nptr)
 	{
-		if (s1[i] != s2[i])
-			return ((unsigned char)s1[i] - s2[i]);
-		i++;
+		if (*nptr < '0' || *nptr > '9')
+			return (r * sign);
+		r *= 10;
+		r += *nptr - '0';
+		nptr++;
 	}
-	return (0);
+	return (r * sign);
 }

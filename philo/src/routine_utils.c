@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 17:22:08 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/23 13:07:17 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/26 10:30:12 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*find_message(t_state state)
 		return ("died");
 }
 
-t_state find_new_state(t_state state)
+t_state	find_new_state(t_state state)
 {
 	if (state == EATING)
 		return (SLEEPING);
