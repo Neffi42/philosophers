@@ -20,14 +20,14 @@ INCLD_DIR 	:= include
 OBJS_DIR 	:= objs
 
 ### FILES ###
-SRC 		:=	ft_utils.c \
+SRC 		:=	actions.c \
+				ft_utils.c \
 				ft_utils2.c \
-				inits.c \
 				main.c \
 				routine_utils.c \
-				routine_utils2.c \
 				routine.c \
-				utils.c
+				utils.c \
+				var.c
 INCLUDES	:=	$(INCLD_DIR)
 INCLD_FLAG 	:= 	$(addprefix -I , $(INCLUDES))
 OBJS 		:= 	$(patsubst %.c,$(OBJS_DIR)/%.o,$(SRC))

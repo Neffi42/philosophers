@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:54:18 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/26 14:55:30 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/27 11:02:18 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,14 @@ typedef enum e_state
 	DEAD
 }	t_state;
 
+typedef struct s_var
+{
+	pthread_mutex_t	mutex;
+	int				content;
+}	t_var;
+
 typedef struct timeval	t_timeval;
+typedef t_var			t_fork;
 
 typedef struct s_rules
 {
@@ -49,55 +56,51 @@ typedef struct s_rules
 
 typedef struct s_shared
 {
-	int				finished;
-	int				start;
-	pthread_mutex_t	mutex_finished;
-	pthread_mutex_t	mutex_write;
-	pthread_mutex_t	mutex_start;
+	t_var			finished;
+	t_var			start;
+	pthread_mutex_t	write;
 }	t_shared;
 
 typedef struct s_philo
 {
-	t_rules			rules;
-	t_state			state;
-	pthread_t		thread;
-	long long		last_meal;
-	int				nb_meals;
-	int				fork;
-	int				*fork2;
-	int				nb;
-	int				*start;
-	int				*finished;
-	pthread_mutex_t	mutex_fork;
-	pthread_mutex_t	*mutex_fork2;
-	pthread_mutex_t	*mutex_finished;
-	pthread_mutex_t	*mutex_write;
-	pthread_mutex_t	*mutex_start;
+	int			id;
+	int			nb_meals;
+	long long	last_meal;
+	t_state		state;
+	t_rules		*rules;
+	t_shared	*shared;
+	t_fork		fork;
+	pthread_t	thread;
+	t_fork		*fork2;
 }	t_philo;
 
-size_t			ft_strlen(char *str);
-void			*ft_calloc(size_t nmemb, size_t size);
-int				ft_strncmp(const char *s1, const char *s2, size_t n);
-int				ft_atoi(const char *nptr);
-char			*ft_itoa(int n);
+size_t		ft_strlen(char *str);
+void		*ft_calloc(size_t nmemb, size_t size);
+int			ft_strncmp(const char *s1, const char *s2, size_t n);
+int			ft_atoi(const char *nptr);
+char		*ft_itoa(int n);
 
-int				init_philos(t_philo *philos, t_shared *shared, t_rules rules);
-int				init_shared(t_shared *shared);
+char		*find_message(t_state state);
+t_state		find_new_state(t_state state);
+int			print_state(t_philo *philo);
+long long	get_time(t_philo *philo, long long *time);
+int			sim_error(t_philo *philo, char *message, char *el);
 
-char			*find_message(t_state state);
-t_state			find_new_state(t_state state);
-int				print_state(t_philo *philo);
-long long		ft_ogettime(t_philo *philo, long long *time);
-int				sim_error(t_philo *philo, char *message, char *el);
+int			die(t_philo *philo, long long time);
+int			eating(t_philo *philo, long long time);
+int			sleeping(t_philo *philo);
+int			thinking(t_philo *philo, long long time);
 
-int				die(t_philo *philo, long long time);
-int				eat(t_philo *philo, long long time);
-int				ft_sleep(t_philo *philo);
-int				check_start(t_philo *philo);
+void		*routine(void *arg);
 
-void			*routine(void *arg);
+int			check_arg(int *data, const char *av);
+int			check_rules(int ac, const char **av, t_rules *rules);
+int			error(char *message, char *el);
+int			destroy(t_philo *philos, int total_nb);
 
-int				error(char *message, char *el);
-int				destroy(t_philo *philos, int total_nb);
+int			init_var(t_var *var, int val);
+void		incr_var(t_var *var);
+void		set_var(t_var *var, int val);
+int			get_var(t_var *var);
 
 #endif

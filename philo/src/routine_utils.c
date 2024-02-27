@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:38:46 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/26 14:55:20 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/27 10:55:25 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_state	find_new_state(t_state state)
 		return (DEAD);
 }
 
-long long	ft_ogettime(t_philo *philo, long long *time)
+long long	get_time(t_philo *philo, long long *time)
 {
 	t_timeval	tv;
 
@@ -53,18 +53,16 @@ int	print_state(t_philo *philo)
 {
 	long long	time;
 
-	if (!ft_ogettime(philo, &time))
+	if (!get_time(philo, &time))
 		return (1);
-	pthread_mutex_lock(philo->mutex_write);
-	printf("[%lld] %u %s\n", time, philo->nb, find_message(philo->state));
-	pthread_mutex_unlock(philo->mutex_write);
+	pthread_mutex_lock(&(philo->shared->write));
+	printf("[%lld] %u %s\n", time, philo->id, find_message(philo->state));
+	pthread_mutex_unlock(&(philo->shared->write));
 	return (0);
 }
 
 int	sim_error(t_philo *philo, char *message, char *el)
 {
-	pthread_mutex_lock(philo->mutex_finished);
-	*(philo->finished) = philo->rules.total_nb;
-	pthread_mutex_unlock(philo->mutex_finished);
+	set_var(&(philo->shared->finished), philo->rules->total_nb);
 	return (error(message, el));
 }

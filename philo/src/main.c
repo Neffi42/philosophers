@@ -6,64 +6,55 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:55:12 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/26 14:31:02 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/27 10:37:20 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static int	check_arg(int *data, const char *av)
+static void	init_philo(t_philo *philo, t_shared *shared, t_rules *rules, int i)
 {
-	char	*tmp;
-
-	*data = ft_atoi(av);
-	if (!*data)
-		return (error(ARGUMENT, (char *)av));
-	tmp = ft_itoa(*data);
-	if (!tmp)
-		return (error(FUNCTION, "ft_uitoa"));
-	if (ft_strncmp(av, tmp, ft_strlen((char *)av) + 1))
-		return (free(tmp), error(ARGUMENT, (char *)av));
-	if (*data <= 0)
-		return (free(tmp), error(ARGUMENT, (char *)av));
-	return (free(tmp), 0);
+	philo->id = i + 1;
+	philo->nb_meals = 0;
+	philo->last_meal = 0;
+	philo->state = THINKING;
+	philo->rules = rules;
+	philo->shared = shared;
+	philo->thread = 0;
 }
 
-static int	check_rules(int ac, const char **av, t_rules *rules)
+static int	init_philos(t_philo *philos, t_shared *shared, t_rules *rules)
 {
-	if (ac < 5 || ac > 6)
-		return (error(USAGE, NULL));
-	if (check_arg(&rules->total_nb, av[1])
-		|| check_arg(&rules->time_die, av[2])
-		|| check_arg(&rules->time_eat, av[3])
-		|| check_arg(&rules->time_sleep, av[4]))
-		return (1);
-	if (ac == 5)
-		rules->total_eat = 0;
-	else if (check_arg(&rules->total_eat, av[5]))
-		return (1);
-	if (rules->total_nb > 300)
-		return (error(NBR_PHILO, (char *)av[1]));
+	int	i;
+
+	i = -1;
+	while (++i < rules->total_nb)
+		philos[i].id = 0;
+	i = -1;
+	while (++i < rules->total_nb)
+	{
+		init_philo(&(philos[i]), shared, rules, i);
+		if (init_var(&(philos[i].fork), 0))
+			return (error(FUNCTION, "pthread_mutex_init"), destroy(philos, i));
+		if (pthread_create(&(philos[i].thread), NULL, routine, &philos[i]))
+			return (error(FUNCTION, "pthread_create"), destroy(philos, i));
+	}
+	i = -1;
+	while (++i < rules->total_nb)
+		philos[i].fork2 = &(philos[(i + 1) % rules->total_nb].fork);
 	return (0);
 }
 
-static int	monitor(t_philo *philos, t_rules rules, t_shared *shared)
+static int	init_shared(t_shared *shared)
 {
-	while (1)
-	{
-		pthread_mutex_lock(&(shared->mutex_finished));
-		if (shared->finished < 0 || shared->finished >= rules.total_nb)
-		{
-			pthread_mutex_lock(&(shared->mutex_start));
-			shared->start = 0;
-			pthread_mutex_unlock(&(shared->mutex_start));
-			pthread_mutex_unlock(&(shared->mutex_finished));
-			break ;
-		}
-		pthread_mutex_unlock(&(shared->mutex_finished));
-		usleep(1000);
-	}
-	return (destroy(philos, rules.total_nb), 0);
+	if (init_var(&(shared->finished), 0))
+		return (1);
+	if (init_var(&(shared->start), 0))
+		return (pthread_mutex_destroy(&(shared->finished.mutex)), 1);
+	if (pthread_mutex_init(&(shared->write), NULL))
+		return (pthread_mutex_destroy(&(shared->finished.mutex)),
+			pthread_mutex_destroy(&(shared->start.mutex)), 1);
+	return (0);
 }
 
 int	main(int ac, const char **av)
@@ -79,10 +70,11 @@ int	main(int ac, const char **av)
 		return (error(FUNCTION, "malloc"));
 	if (init_shared(&shared))
 		return (free(philos), 1);
-	pthread_mutex_lock(&(shared.mutex_start));
-	shared.start = 1;
-	if (init_philos(philos, &shared, rules))
+	if (init_philos(philos, &shared, &rules))
 		return (1);
-	pthread_mutex_unlock(&(shared.mutex_start));
-	return (monitor(philos, rules, &shared));
+	set_var(&(shared.start), 1);
+	while (get_var(&(shared.finished)) < rules.total_nb)
+		usleep(100);
+	set_var(&(shared.start), 0);
+	return (destroy(philos, rules.total_nb), 0);
 }
