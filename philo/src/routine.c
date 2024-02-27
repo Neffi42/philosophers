@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 23:43:53 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/27 15:43:36 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/27 17:15:50 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	*routine(void *arg)
 	philo = (t_philo *)arg;
 	while (get_var(&(philo->shared->start)) == 0)
 		usleep(1000);
-	if (philo->id % 2 == 0)
+	if (philo->id % 2)
 		usleep(philo->rules->time_eat * 1000);
 	if (get_time(philo, &time))
 		return (set_var(&(philo->shared->start), 0), NULL);
