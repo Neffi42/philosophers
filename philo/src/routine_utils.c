@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:38:46 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/27 11:29:14 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/27 16:00:38 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,27 +45,21 @@ long long	get_time(t_philo *philo, long long *time)
 	t_timeval	tv;
 
 	if (gettimeofday(&tv, NULL))
-		return (sim_error(philo, FUNCTION, "gettimeofday"), *time = 0, *time);
+		return (error(FUNCTION, "gettimeofday"), 1);
 	*time = tv.tv_sec * 1000 + tv.tv_usec / 1000 - philo->shared->start_time;
-	return (*time);
+	return (0);
 }
 
 int	print_state(t_philo *philo)
 {
 	long long	time;
 
-	if (!get_time(philo, &time))
-		return (1);
 	pthread_mutex_lock(&(philo->shared->write));
 	if (get_var(&(philo->shared->start)) == 0)
 		return (pthread_mutex_unlock(&(philo->shared->write)), 1);
+	if (get_time(philo, &time))
+		return (1);
 	printf("%lld %u %s\n", time, philo->id, find_message(philo->state));
 	pthread_mutex_unlock(&(philo->shared->write));
 	return (0);
-}
-
-int	sim_error(t_philo *philo, char *message, char *el)
-{
-	set_var(&(philo->shared->finished), philo->rules->total_nb);
-	return (error(message, el));
 }

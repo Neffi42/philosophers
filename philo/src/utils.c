@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 15:34:03 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/27 09:31:27 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/27 15:07:59 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,12 @@ int	destroy(t_philo *philos, int total_nb)
 			pthread_join(philos[i].thread, NULL);
 	i = -1;
 	while (++i < total_nb)
-		if (philos[i].id != 0)
-			pthread_mutex_destroy(&(philos[i].fork.mutex));
-	pthread_mutex_destroy(&(philos->shared->finished.mutex));
+	{
+		if (philos[i].id == 0)
+			continue ;
+		pthread_mutex_destroy(&(philos[i].fork.mutex));
+		pthread_mutex_destroy(&(philos[i].finished.mutex));
+	}
 	pthread_mutex_destroy(&(philos->shared->start.mutex));
 	pthread_mutex_destroy(&(philos->shared->write));
 	return (free(philos), 1);

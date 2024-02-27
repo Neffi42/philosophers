@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:54:18 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/27 11:18:54 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/27 15:08:30 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ typedef struct s_rules
 
 typedef struct s_shared
 {
-	t_var			finished;
 	t_var			start;
 	pthread_mutex_t	write;
 	long long		start_time;
@@ -73,6 +72,7 @@ typedef struct s_philo
 	t_fork		fork;
 	pthread_t	thread;
 	t_fork		*fork2;
+	t_var		finished;
 }	t_philo;
 
 size_t		ft_strlen(char *str);
@@ -85,7 +85,6 @@ char		*find_message(t_state state);
 t_state		find_new_state(t_state state);
 int			print_state(t_philo *philo);
 long long	get_time(t_philo *philo, long long *time);
-int			sim_error(t_philo *philo, char *message, char *el);
 
 int			die(t_philo *philo, long long time);
 int			eating(t_philo *philo, long long time);

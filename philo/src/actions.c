@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:35:39 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/27 12:40:43 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/27 15:40:44 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,16 @@ int	eating(t_philo *philo, long long time)
 		usleep(philo->rules->time_eat * 1000);
 	if (get_var(&(philo->shared->start)) == 0)
 		return (1);
-	(set_var(&(philo->fork), 0), set_var(philo->fork2, 0));
+	set_var(&(philo->fork), 0);
+	if (get_var(&(philo->shared->start)) == 0)
+		return (1);
+	set_var(philo->fork2, 0);
+	if (get_var(&(philo->shared->start)) == 0)
+		return (1);
 	philo->state = SLEEPING;
-	if (++(philo->nb_meals) != philo->rules->total_eat)
-		return (0);
-	return (incr_var(&(philo->shared->finished)), 0);
+	if (++(philo->nb_meals) == philo->rules->total_eat)
+		set_var(&(philo->finished), 1);
+	return (0);
 }
 
 int	sleeping(t_philo *philo)
@@ -57,7 +62,7 @@ static int	get_fork(t_philo *philo, t_fork *fork, long long time)
 
 	while (get_var(fork) != 0)
 	{
-		if (get_var(&(philo->shared->start)) == 0 || !get_time(philo, &new_time)
+		if (get_var(&(philo->shared->start)) == 0 || get_time(philo, &new_time)
 			|| new_time - time > philo->rules->time_die)
 			return (die(philo, 0));
 		usleep(1000);
@@ -70,7 +75,7 @@ static int	get_fork(t_philo *philo, t_fork *fork, long long time)
 
 int	thinking(t_philo *philo, long long time)
 {
-	if (get_fork(philo, &(philo->fork), time) || !get_time(philo, &time))
+	if (get_fork(philo, &(philo->fork), time) || get_time(philo, &time))
 		return (1);
 	if (get_fork(philo, philo->fork2, time))
 		return (1);

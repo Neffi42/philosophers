@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 21:21:54 by averin            #+#    #+#             */
-/*   Updated: 2024/02/27 10:12:09 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/27 15:19:50 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	init_var(t_var *var, int val)
 {
 	if (pthread_mutex_init(&var->mutex, NULL))
-		return (1);
+		return (error(FUNCTION, "pthread_mutex_init"), 1);
 	var->content = val;
 	return (0);
 }

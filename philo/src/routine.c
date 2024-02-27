@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 23:43:53 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/27 11:07:52 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/27 15:43:36 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ void	*routine(void *arg)
 		usleep(1000);
 	if (philo->id % 2 == 0)
 		usleep(philo->rules->time_eat * 1000);
-	if (!get_time(philo, &time))
-		return (NULL);
+	if (get_time(philo, &time))
+		return (set_var(&(philo->shared->start), 0), NULL);
 	while (!simulation(philo, time))
-		if (!get_time(philo, &time))
-			return (NULL);
+		if (get_time(philo, &time))
+			return (set_var(&(philo->shared->start), 0), NULL);
 	return (NULL);
 }
