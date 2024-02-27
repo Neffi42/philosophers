@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:35:39 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/27 11:13:08 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/27 12:40:43 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,13 @@ int	eating(t_philo *philo, long long time)
 {
 	philo->last_meal = time;
 	if (philo->rules->time_eat > philo->rules->time_die)
-		usleep(philo->rules->time_die * 1000);
+		die(philo, philo->rules->time_die * 1000);
 	else
 		usleep(philo->rules->time_eat * 1000);
 	if (get_var(&(philo->shared->start)) == 0)
 		return (1);
 	(set_var(&(philo->fork), 0), set_var(philo->fork2, 0));
 	philo->state = SLEEPING;
-	if (philo->rules->time_eat > philo->rules->time_die)
-		return (die(philo, 0));
 	if (++(philo->nb_meals) != philo->rules->total_eat)
 		return (0);
 	return (incr_var(&(philo->shared->finished)), 0);

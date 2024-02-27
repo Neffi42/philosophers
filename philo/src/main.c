@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:55:12 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/27 11:12:06 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/27 12:47:04 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,11 @@ static int	init_philos(t_philo *philos, t_shared *shared, t_rules *rules)
 
 static int	init_shared(t_shared *shared)
 {
+	t_timeval	tv;
+
+	if (gettimeofday(&tv, NULL))
+		return (1);
+	shared->start_time = tv.tv_sec * 1000 + tv.tv_usec / 1000;
 	if (init_var(&(shared->finished), 0))
 		return (1);
 	if (init_var(&(shared->start), 0))
@@ -73,8 +78,11 @@ int	main(int ac, const char **av)
 	if (init_philos(philos, &shared, &rules))
 		return (1);
 	set_var(&(shared.start), 1);
-	while (get_var(&(shared.start))
-		&& get_var(&(shared.finished)) < rules.total_nb)
+	while (get_var(&(shared.start)))
+	{
+		if (get_var(&(shared.finished)) >= rules.total_nb)
+			set_var(&(shared.start), 0);
 		usleep(1);
+	}
 	return (destroy(philos, rules.total_nb), 0);
 }

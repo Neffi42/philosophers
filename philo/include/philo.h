@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:54:18 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/27 11:02:18 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/27 11:18:54 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct s_shared
 	t_var			finished;
 	t_var			start;
 	pthread_mutex_t	write;
+	long long		start_time;
 }	t_shared;
 
 typedef struct s_philo
