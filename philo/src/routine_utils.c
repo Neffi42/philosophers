@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:38:46 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/27 10:55:25 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/27 11:10:25 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ int	print_state(t_philo *philo)
 	if (!get_time(philo, &time))
 		return (1);
 	pthread_mutex_lock(&(philo->shared->write));
+	if (get_var(&(philo->shared->start)) == 0)
+		return (1);
 	printf("[%lld] %u %s\n", time, philo->id, find_message(philo->state));
 	pthread_mutex_unlock(&(philo->shared->write));
 	return (0);

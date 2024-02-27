@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:35:39 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/27 10:51:49 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/27 11:13:08 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,10 @@ int	die(t_philo *philo, long long time)
 {
 	philo->state = DEAD;
 	usleep(time);
-	if (get_var(&(philo->shared->start)) == 0)
+	if (get_var(&(philo->shared->start)) == 0 || print_state(philo))
 		return (1);
-	return (sim_error(philo, NULL, NULL), print_state(philo), 1);
+	set_var(&(philo->shared->start), 0);
+	return (1);
 }
 
 int	eating(t_philo *philo, long long time)

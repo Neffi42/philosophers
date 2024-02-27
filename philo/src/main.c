@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:55:12 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/27 10:37:20 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/27 11:12:06 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ int	main(int ac, const char **av)
 	if (init_philos(philos, &shared, &rules))
 		return (1);
 	set_var(&(shared.start), 1);
-	while (get_var(&(shared.finished)) < rules.total_nb)
-		usleep(100);
-	set_var(&(shared.start), 0);
+	while (get_var(&(shared.start))
+		&& get_var(&(shared.finished)) < rules.total_nb)
+		usleep(1);
 	return (destroy(philos, rules.total_nb), 0);
 }
