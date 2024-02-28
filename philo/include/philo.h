@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:54:18 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/27 15:08:30 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/28 13:19:11 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,21 +54,21 @@ typedef struct s_rules
 	int	time_sleep;
 }	t_rules;
 
-typedef struct s_shared
+typedef struct s_vars
 {
 	t_var			start;
 	pthread_mutex_t	write;
-	long long		start_time;
-}	t_shared;
+	time_t			s_time;
+}	t_vars;
 
 typedef struct s_philo
 {
 	int			id;
 	int			nb_meals;
-	long long	last_meal;
+	time_t		last_meal;
 	t_state		state;
 	t_rules		*rules;
-	t_shared	*shared;
+	t_vars		*vars;
 	t_fork		fork;
 	pthread_t	thread;
 	t_fork		*fork2;
@@ -82,21 +82,16 @@ int			ft_atoi(const char *nptr);
 char		*ft_itoa(int n);
 
 char		*find_message(t_state state);
-t_state		find_new_state(t_state state);
 int			print_state(t_philo *philo);
-long long	get_time(t_philo *philo, long long *time);
-
-int			die(t_philo *philo, long long time);
-int			eating(t_philo *philo, long long time);
-int			sleeping(t_philo *philo);
-int			thinking(t_philo *philo, long long time);
+time_t		get_time(t_philo *philo, time_t *time);
+int			is_philo_dead(t_philo *philo);
 
 void		*routine(void *arg);
 
-int			check_arg(int *data, const char *av);
 int			check_rules(int ac, const char **av, t_rules *rules);
 int			error(char *message, char *el);
 int			destroy(t_philo *philos, int total_nb);
+int			ft_usleep(t_philo *philo, int time_to_sleep);
 
 int			init_var(t_var *var, int val);
 void		incr_var(t_var *var);

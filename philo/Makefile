@@ -20,8 +20,7 @@ INCLD_DIR 	:= include
 OBJS_DIR 	:= objs
 
 ### FILES ###
-SRC 		:=	actions.c \
-				ft_utils.c \
+SRC 		:=	ft_utils.c \
 				ft_utils2.c \
 				main.c \
 				routine_utils.c \
