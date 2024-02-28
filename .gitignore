@@ -1,3 +1,6 @@
 .vscode
 objs
 *.o
+test.sh
+log
+.debug.txt
