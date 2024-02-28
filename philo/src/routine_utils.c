@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:38:46 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/28 15:58:58 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/28 21:39:40 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ int	ft_usleep(t_philo *philo, int time_to_sleep)
 			return (1);
 		if (is_philo_dead(philo))
 			return (1);
-		// dprintf(2, "%ld %ld %d\n", end_time, cu_time, time_to_sleep);
 	}
 	return (0);
 }

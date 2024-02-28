@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:55:12 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/28 15:31:28 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/28 21:39:02 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	run(t_philo *philos, t_rules *rules, t_vars *vars)
 	while (get_var(&vars->run))
 	{
 		usleep(1000);
-		if (get_var(&vars->meals) != rules->total_meals)
+		if (rules->total_meals && get_var(&vars->meals) >= rules->total_nb)
 		{
 			set_var(&vars->run, 0);
 			break ;

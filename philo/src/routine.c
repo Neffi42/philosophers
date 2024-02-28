@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 23:43:53 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/28 15:54:03 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/28 21:56:15 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ static int	get_fork(t_philo *philo, t_fork *fork)
 static int	eating(t_philo *philo)
 {
 	if (get_fork(philo, &(philo->fork)) || get_fork(philo, philo->fork2))
-			return (1);
+		return (1);
 	if (print_state(philo, EATING)
 		|| get_time(philo, &philo->last_meal)
 		|| ft_usleep(philo, philo->rules->time_eat))
-		return (dprintf(2, "bruh\n"), 1);
+		return (1);
 	set_var(&(philo->fork), 0);
 	if (is_philo_dead(philo))
 		return (1);
@@ -45,7 +45,7 @@ static int	eating(t_philo *philo)
 
 static int	sleeping(t_philo *philo)
 {
-	if (print_state(philo, THINKING))
+	if (print_state(philo, SLEEPING))
 		return (1);
 	return (ft_usleep(philo, philo->rules->time_sleep));
 }
