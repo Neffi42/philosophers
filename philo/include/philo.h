@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:54:18 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/28 15:49:13 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/28 22:34:19 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ int		is_philo_dead(t_philo *philo);
 
 void	*routine(void *arg);
 
-int		check_rules(int ac, const char **av, t_rules *rules);
 int		error(char *message, char *el);
 int		destroy(t_philo *philos, int total_nb);
 int		ft_usleep(t_philo *philo, int time_to_sleep);
