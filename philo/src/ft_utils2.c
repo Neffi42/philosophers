@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 09:47:49 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/26 09:45:29 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/28 15:27:31 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,10 @@ void	*ft_calloc(size_t nmemb, size_t size)
 
 	x = nmemb * size;
 	if (size != 0 && x / size != nmemb)
-		return (NULL);
+		return (error(FCT, "ft_calloc"), NULL);
 	r = malloc(x);
 	if (!r)
-		return (NULL);
+		return (error(FCT, "malloc"), NULL);
 	ft_memset(r, 0, x);
 	return (r);
 }

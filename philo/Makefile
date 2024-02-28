@@ -22,7 +22,9 @@ OBJS_DIR 	:= objs
 ### FILES ###
 SRC 		:=	ft_utils.c \
 				ft_utils2.c \
+				init.c \
 				main.c \
+				parsing.c \
 				routine_utils.c \
 				routine.c \
 				utils.c \

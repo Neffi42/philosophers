@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 19:11:26 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/26 10:12:28 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/28 15:07:28 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static size_t	count_chars(int n)
 	size_t	chars;
 
 	chars = 0;
-	if (n == -2147483648)
+	if (n == INT_MIN)
 		return (11);
 	if (n == 0)
 		return (1);
