@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 23:43:53 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/28 21:56:15 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/29 09:27:31 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,7 @@ void	*routine(void *arg)
 	while (get_var(&(philo->vars->run)) == 0)
 		usleep(10);
 	if (philo->id % 2)
-		if (usleep(10000))
-			return (NULL);
+		usleep(10000);
 	pthread_mutex_lock(&philo->vars->meals.mutex);
 	if (get_time(philo, &philo->last_meal))
 		return (pthread_mutex_unlock(&philo->vars->meals.mutex), NULL);

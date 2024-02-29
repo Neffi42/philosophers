@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:54:18 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/28 22:34:19 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/29 09:43:17 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,16 +86,15 @@ int		check_rules(int ac, const char **av, t_rules *rules);
 int		init_philos(t_philo *philos, t_vars *vars, t_rules *rules);
 int		init_vars(t_vars *vars);
 
-char	*find_message(t_state state);
 int		print_state(t_philo *philo, t_state state);
 time_t	get_time(t_philo *philo, time_t *time);
 int		is_philo_dead(t_philo *philo);
+int		ft_usleep(t_philo *philo, int time_to_sleep);
 
 void	*routine(void *arg);
 
 int		error(char *message, char *el);
 int		destroy(t_philo *philos, int total_nb);
-int		ft_usleep(t_philo *philo, int time_to_sleep);
 
 int		init_var(t_var *var, int val);
 void	incr_var(t_var *var);

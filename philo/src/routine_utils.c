@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:38:46 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/28 21:39:40 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/29 09:43:25 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ time_t	get_time(t_philo *philo, time_t *time)
 	return (0);
 }
 
-char	*find_message(t_state state)
+static char	*find_message(t_state state)
 {
 	if (state == HAS_FORK)
 		return ("has taken a fork");
