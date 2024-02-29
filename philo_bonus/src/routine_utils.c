@@ -6,25 +6,19 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 14:38:46 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/29 10:14:16 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/29 15:07:35 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-time_t	get_time(t_philo *philo, time_t *time)
+void	get_time(t_philo *philo, time_t *time)
 {
 	t_timeval	tv;
 
 	if (gettimeofday(&tv, NULL))
-	{
-		sem_wait(philo->sems->run);
-		philo->sems->run = 0;
-		sem_post(philo->sems->run);
-		return (error(FCT, "gettimeofday"));
-	}
+		(stop(philo), error(FCT, "gettimeofday"), destroy(philo->origin, 1));
 	*time = tv.tv_sec * 1000000 + tv.tv_usec - philo->rules->s_time;
-	return (0);
 }
 
 static char	*find_message(t_state state)
@@ -61,22 +55,29 @@ int	print_state(t_philo *philo, t_state state)
 	return (0);
 }
 
+void	check_for_dead(t_philo *philos)
+{
+	sem_wait(philos->sems->run);
+	if (philos->sems->bool_run == 0)
+	{
+		sem_post(philos->sems->run);
+		while (1)
+			usleep(1000);
+	}
+	sem_post(philos->sems->run);
+}
+
 int	is_philo_dead(t_philo *philo)
 {
 	time_t	cu_time;
 
-	sem_wait(philo->sems->run);
-	if (philo->sems->bool_run == 0)
-		return (sem_post(philo->sems->run), 1);
-	sem_post(philo->sems->run);
 	if (get_time(philo, &cu_time))
 		return (1);
 	if (cu_time - philo->last_meal > philo->rules->time_die)
 	{
-		sem_wait(philo->sems->run);
-		philo->sems->run = 0;
-		sem_post(philo->sems->run);
-		return (print_state(philo, DEAD), 1);
+		stop(philo);
+		printf("%ld %u died\n", cu_time / 1000, philo->id);
+		destroy(philo, 1);
 	}
 	return (0);
 }
@@ -94,6 +95,7 @@ int	ft_usleep(t_philo *philo, int time_to_sleep)
 		usleep(250);
 		if (get_time(philo, &cu_time))
 			return (1);
+		check_for_dead(philo);
 		if (is_philo_dead(philo))
 			return (1);
 	}

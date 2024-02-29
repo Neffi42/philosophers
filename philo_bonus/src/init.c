@@ -6,13 +6,13 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 14:58:33 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/29 10:05:01 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/29 14:55:06 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-int	init_philos(t_philo *philos, t_sems *sems, t_rules *rules)
+void	init_philos(t_philo *philos, t_sems *sems, t_rules *rules)
 {
 	int	i;
 
@@ -25,10 +25,10 @@ int	init_philos(t_philo *philos, t_sems *sems, t_rules *rules)
 		philos[i].thread = 0;
 		philos[i].rules = rules;
 		philos[i].sems = sems;
+		philos[i].origin = philos;
 		if (pthread_create(&(philos[i].thread), NULL, routine, &philos[i]))
-			return (error(FCT, "pthread_create"), destroy(philos, i));
+			(error(FCT, "pthread_create"), destroy(philos, 1));
 	}
-	return (0);
 }
 
 int	init_sems(t_sems *sems, int total_nb)

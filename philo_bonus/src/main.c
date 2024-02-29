@@ -6,33 +6,28 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:55:12 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/29 10:40:10 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/02/29 15:02:05 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-static int	run(t_philo *philos, t_rules *rules, t_sems *sems)
+static void	run(t_philo *philos, t_rules *rules, t_sems *sems)
 {
 	sems->bool_run = 1;
 	sem_post(sems->run);
 	while (1)
 	{
-		(usleep(1000), sem_wait(sems->run), sem_wait(sems->meals));
-		if (sems->bool_run == 0)
+		usleep(1000);
+		if (rules->total_meals)
 		{
-			(sem_post(sems->meals), sem_post(sems->run));
-			break ;
+			check_for_dead(philos);
+			sem_wait(sems->meals);
+			if (sems->nb_meals >= rules->total_nb)
+				(sem_post(sems->meals), stop(philos), destroy(philos, 0));
+			sem_post(sems->meals);
 		}
-		if (rules->total_meals && sems->nb_meals >= rules->total_nb)
-		{
-			sems->bool_run = 0;
-			(sem_post(sems->meals), sem_post(sems->run));
-			break ;
-		}
-		(sem_post(sems->meals), sem_post(sems->run));
 	}
-	return (destroy(philos, rules->total_nb), 0);
 }
 
 int	main(int ac, const char **av)
@@ -53,7 +48,6 @@ int	main(int ac, const char **av)
 	if (!philos)
 		return (1);
 	sem_wait(sems.run);
-	if (init_philos(philos, &sems, &rules))
-		return (1);
-	return (run(philos, &rules, &sems));
+	init_philos(philos, &sems, &rules);
+	run(philos, &rules, &sems);
 }
