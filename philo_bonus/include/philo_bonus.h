@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:54:18 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/29 15:04:03 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/03/01 10:40:37 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct s_sems
 {
 	sem_t	*run;
 	int		bool_run;
+	int		nb_threads;
 	sem_t	*meals;
 	int		nb_meals;
 	sem_t	*write;
@@ -71,7 +72,6 @@ typedef struct s_philo
 	pthread_t	thread;
 	t_rules		*rules;
 	t_sems		*sems;
-	t_philo		*origin;
 }	t_philo;
 
 size_t	ft_strlen(char *str);
@@ -85,9 +85,9 @@ int		check_rules(int ac, const char **av, t_rules *rules);
 void	init_philos(t_philo *philos, t_sems *sems, t_rules *rules);
 int		init_sems(t_sems *sems, int total_nb);
 
-time_t	get_time(t_philo *philo, time_t *time);
+int		get_time(t_philo *philo, time_t *time);
 int		print_state(t_philo *philo, t_state state);
-void	check_for_dead(t_philo *philos);
+int		check_for_dead(t_philo *philos);
 int		is_philo_dead(t_philo *philo);
 int		ft_usleep(t_philo *philo, int time_to_sleep);
 
@@ -100,6 +100,6 @@ int		error(char *message, char *el);
 void	unlink_sem(void);
 void	close_sem(t_sems *sems);
 void	destroy_sem(sem_t *sem, char *name);
-void	destroy(t_philo *philos, int code);
+void	destroy(t_philo *philos, int code, int total_nb);
 
 #endif

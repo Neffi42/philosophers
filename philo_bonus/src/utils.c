@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 15:34:03 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/29 14:54:31 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/03/01 10:49:20 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,14 @@ void	destroy_sem(sem_t *sem, char *name)
 	sem_unlink(name);
 }
 
-void	destroy(t_philo *philos, int code)
+void	destroy(t_philo *philos, int code, int total_nb)
 {
+	int	i;
+
+	i = -1;
+	while (++i < total_nb)
+		if (philos[i].thread)
+			pthread_join(philos[i].thread, NULL);
 	close_sem(philos->sems);
 	unlink_sem();
 	free(philos);

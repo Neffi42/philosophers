@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:55:12 by abasdere          #+#    #+#             */
-/*   Updated: 2024/02/29 15:02:05 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/03/01 10:48:02 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,16 @@ static void	run(t_philo *philos, t_rules *rules, t_sems *sems)
 	while (1)
 	{
 		usleep(1000);
+		if (check_for_dead(philos))
+			destroy(philos, 1, rules->total_nb);
 		if (rules->total_meals)
 		{
-			check_for_dead(philos);
 			sem_wait(sems->meals);
+			if (check_for_dead(philos))
+				(sem_post(sems->meals), destroy(philos, 1, rules->total_nb));
 			if (sems->nb_meals >= rules->total_nb)
-				(sem_post(sems->meals), stop(philos), destroy(philos, 0));
+				(stop(philos), sem_post(sems->meals),
+					destroy(philos, 0, rules->total_nb));
 			sem_post(sems->meals);
 		}
 	}
