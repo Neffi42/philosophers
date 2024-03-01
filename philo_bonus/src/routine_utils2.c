@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 10:35:35 by abasdere          #+#    #+#             */
-/*   Updated: 2024/03/01 11:40:30 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/03/01 12:55:53 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	ft_usleep(t_philo *philo, int time_to_sleep)
 	end_time = cu_time + time_to_sleep;
 	while (cu_time < end_time)
 	{
-		usleep(250);
+		usleep(10);
 		if (get_time(philo, &cu_time))
 			return (1);
 		if (check_for_dead(philo))
