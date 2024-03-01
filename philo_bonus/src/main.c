@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:55:12 by abasdere          #+#    #+#             */
-/*   Updated: 2024/03/01 11:37:39 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/03/01 15:21:53 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	flood_stop(t_philo *philos, time_t cu_time, int dead)
 
 static void	monitor(t_philo *philos, t_rules *rules)
 {
-	int	i;
+	int		i;
 	time_t	cu_time;
 
 	i = -1;
