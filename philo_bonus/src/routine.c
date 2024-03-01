@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 23:43:53 by abasdere          #+#    #+#             */
-/*   Updated: 2024/03/01 10:39:01 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/03/01 11:33:49 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	get_fork(t_philo *philo)
 {
 	sem_wait(philo->sems->forks);
-	if (check_for_dead(philo) || is_philo_dead(philo))
+	if (check_for_dead(philo))
 		return (1);
 	if (print_state(philo, HAS_FORK))
 		return (1);
@@ -36,13 +36,13 @@ static int	eating(t_philo *philo)
 	if (philo->rules->total_meals)
 	{
 		sem_wait(philo->sems->meals);
-		if (check_for_dead(philo) || is_philo_dead(philo))
+		if (check_for_dead(philo))
 			return (sem_post(philo->sems->meals), 1);
 		if (++(philo->nb_meals) == philo->rules->total_meals)
 			philo->sems->nb_meals++;
 		sem_post(philo->sems->meals);
 	}
-	if (check_for_dead(philo) || is_philo_dead(philo))
+	if (check_for_dead(philo))
 		return (1);
 	return (0);
 }
@@ -72,7 +72,7 @@ void	*routine(void *arg)
 		return (one_philo(philo));
 	if (philo->id % 2)
 		usleep(10000);
-	if (check_for_dead(philo) || is_philo_dead(philo))
+	if (check_for_dead(philo))
 		return (NULL);
 	if (get_time(philo, &philo->last_meal))
 		return (NULL);

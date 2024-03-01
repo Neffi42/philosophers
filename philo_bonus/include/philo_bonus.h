@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:54:18 by abasdere          #+#    #+#             */
-/*   Updated: 2024/03/01 10:40:37 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/03/01 11:34:09 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ int		init_sems(t_sems *sems, int total_nb);
 int		get_time(t_philo *philo, time_t *time);
 int		print_state(t_philo *philo, t_state state);
 int		check_for_dead(t_philo *philos);
-int		is_philo_dead(t_philo *philo);
 int		ft_usleep(t_philo *philo, int time_to_sleep);
 
 void	stop(t_philo *philo);

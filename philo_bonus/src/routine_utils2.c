@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 10:35:35 by abasdere          #+#    #+#             */
-/*   Updated: 2024/03/01 10:58:53 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/03/01 11:40:30 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ int	ft_usleep(t_philo *philo, int time_to_sleep)
 		usleep(250);
 		if (get_time(philo, &cu_time))
 			return (1);
-		if (check_for_dead(philo) || is_philo_dead(philo))
+		if (check_for_dead(philo))
 			return (1);
 	}
-	if (check_for_dead(philo) || is_philo_dead(philo))
+	if (check_for_dead(philo))
 		return (1);
 	return (0);
 }
@@ -50,9 +50,5 @@ void	*one_philo(t_philo *philo)
 	time = tv.tv_sec * 1000000 + tv.tv_usec - philo->rules->s_time;
 	printf("%ld %u has taken a fork\n", time / 1000, philo->id);
 	usleep(philo->rules->time_die);
-	if (gettimeofday(&tv, NULL))
-		return (error(FCT, "gettimeofday"), stop(philo), NULL);
-	time = tv.tv_sec * 1000000 + tv.tv_usec - philo->rules->s_time;
-	printf("%ld %u died\n", time / 1000, philo->id);
-	return (stop(philo), NULL);
+	return (NULL);
 }

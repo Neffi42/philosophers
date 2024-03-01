@@ -6,11 +6,47 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 13:55:12 by abasdere          #+#    #+#             */
-/*   Updated: 2024/03/01 10:48:02 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/03/01 11:37:39 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
+
+static void	flood_stop(t_philo *philos, time_t cu_time, int dead)
+{
+	int	i;
+
+	i = -1;
+	stop(philos);
+	printf("%ld %u died\n", cu_time / 1000, philos[dead].id);
+	while (++i < 2 * philos->rules->total_nb)
+	{
+		sem_post(philos->sems->run);
+		sem_post(philos->sems->meals);
+		sem_post(philos->sems->write);
+		sem_post(philos->sems->forks);
+	}
+	destroy(philos, 1, philos->rules->total_nb);
+}
+
+static void	monitor(t_philo *philos, t_rules *rules)
+{
+	int	i;
+	time_t	cu_time;
+
+	i = -1;
+	if (check_for_dead(philos))
+		destroy(philos, 1, rules->total_nb);
+	while (++i < rules->total_nb)
+	{
+		if (get_time(philos, &cu_time))
+			destroy(philos, 1, rules->total_nb);
+		if (cu_time - philos[i].last_meal >= rules->time_die)
+			break ;
+	}
+	if (i < rules->total_nb)
+		flood_stop(philos, cu_time, i);
+}
 
 static void	run(t_philo *philos, t_rules *rules, t_sems *sems)
 {
@@ -19,13 +55,11 @@ static void	run(t_philo *philos, t_rules *rules, t_sems *sems)
 	while (1)
 	{
 		usleep(1000);
-		if (check_for_dead(philos))
-			destroy(philos, 1, rules->total_nb);
+		monitor(philos, rules);
 		if (rules->total_meals)
 		{
 			sem_wait(sems->meals);
-			if (check_for_dead(philos))
-				(sem_post(sems->meals), destroy(philos, 1, rules->total_nb));
+			monitor(philos, rules);
 			if (sems->nb_meals >= rules->total_nb)
 				(stop(philos), sem_post(sems->meals),
 					destroy(philos, 0, rules->total_nb));
