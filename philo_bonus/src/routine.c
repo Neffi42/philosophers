@@ -6,7 +6,7 @@
 /*   By: abasdere <abasdere@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 23:43:53 by abasdere          #+#    #+#             */
-/*   Updated: 2024/03/01 11:33:49 by abasdere         ###   ########.fr       */
+/*   Updated: 2024/03/01 15:07:53 by abasdere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	*routine(void *arg)
 	if (philo->rules->total_nb == 1)
 		return (one_philo(philo));
 	if (philo->id % 2)
-		usleep(10000);
+		usleep(100);
 	if (check_for_dead(philo))
 		return (NULL);
 	if (get_time(philo, &philo->last_meal))
